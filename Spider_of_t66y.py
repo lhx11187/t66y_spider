@@ -65,7 +65,8 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
     #写入文件
     with open(savepath+"/"+'1.html','a') as file_obj:
         html_doc=str(f.content,'unicode_escape')
-        file_obj.write(f.text)
+        #file_obj.write(f.text)
+        file_obj.write(html_doc)
     photo_num=len(photo_list)
     #bar=tqdm.tqdm(photo_list)
     #bar.set_description("post url: %s" % (url))
