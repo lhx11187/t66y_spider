@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import requests
 import threading
 from bs4 import BeautifulSoup
@@ -62,7 +64,7 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
     savepath=path+"/"+name[:4]+"/"+name[4:]
     #写入文件
     with open(savepath+"/"+'1.html','a') as file_obj:
-        html_doc=str(f.content,'utf-8')
+        html_doc=str(f.content,'unicode_escape')
         file_obj.write(f.text)
     photo_num=len(photo_list)
     #bar=tqdm.tqdm(photo_list)
@@ -143,7 +145,7 @@ def get_list(class_name,url): #该函数获取板块内的帖子列表
         download_thread=threading.Thread(target=download_pic, args=(key,post_list[key],"./t66y/"+class_name,)) #多线程下载
         download_thread.setDaemon(True)  #设置守护进程
         download_thread.start()
-        time.sleep(0.1)
+        time.sleep(1)
 
 def pre_exit():
     while(1):
