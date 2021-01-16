@@ -60,6 +60,10 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
         return 0
 
     savepath=path+"/"+name[:4]+"/"+name[4:]
+    #写入文件
+    with open(savepath+"/"+'1.html','a') as file_obj:
+        html_doc=str(f.content,'utf-8')
+        file_obj.write(f.text)
     photo_num=len(photo_list)
     #bar=tqdm.tqdm(photo_list)
     #bar.set_description("post url: %s" % (url))
@@ -115,7 +119,16 @@ def get_list(class_name,url): #该函数获取板块内的帖子列表
         post_title=post_class+post_title
         post_url=str(i.find_all('h3')[0]).split('"')[1]
         post_url=main_url+post_url
-        post_list[post_title] =post_url
+        #post_list[post_title] =post_url
+        fileall=""
+        with open('list.txt') as file_obj:
+            fileall = file_obj.read()
+        if post_url in fileall:
+            continue
+        else:
+            with open('list.txt', 'a') as file_obj:
+                file_obj.write(post_title+','+post_url+'\n')
+            post_list[post_title] =post_url
     print(post_list)
     bar=tqdm.tqdm(post_list)
     bar.set_description("获取【%s】帖子列表=>"%(class_name))
