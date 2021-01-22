@@ -126,6 +126,9 @@ def get_list(class_name,url): #该函数获取板块内的帖子列表
         post_url=main_url+post_url
         #post_list[post_title] =post_url
         fileall=""
+        if os.path.exists('list.txt'):
+            with open('list.txt', 'a') as file_obj:
+                file_obj.write('\n')
         with open('list.txt') as file_obj:
             fileall = file_obj.read()
         if post_url in fileall:
