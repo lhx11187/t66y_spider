@@ -63,10 +63,10 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
 
     savepath=path+"/"+name[:4]+"/"+name[4:]
     #写入文件
-    with open(savepath+"/"+'1.html','a') as file_obj:
-        html_doc=str(f.content,'unicode_escape')
-        #file_obj.write(f.text)
-        file_obj.write(html_doc)
+    with open(savepath+"/"+"1.html",'a',encoding="ISO-8859-1") as file_obj:
+        #html_doc=str(f.content,'unicode_escape')
+        #file_obj.write(html_doc)
+        file_obj.write(f.text)
     photo_num=len(photo_list)
     #bar=tqdm.tqdm(photo_list)
     #bar.set_description("post url: %s" % (url))
@@ -75,6 +75,8 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
         #print(str(li))
         index+=1
         pic_url=li.get('ess-data')
+        with open(savepath+"/"+'pic_url.txt','a',encoding="ISO-8859-1") as file_obj:
+            file_obj.write(pic_url+"\n")
         print("[%d/%d] Download: %s"%(index,photo_num,url))
         try:
             r=myRequest_get(pic_url,stream=True)
