@@ -63,7 +63,7 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
 
     savepath=path+"/"+name[:4]+"/"+name[4:]
     #写入文件
-    with open(savepath+"/"+"1.html",'a',encoding="ISO-8859-1") as file_obj:
+    with open(savepath+"/"+"1024bak.html",'a',encoding="ISO-8859-1") as file_obj:
         #html_doc=str(f.content,'unicode_escape')
         #file_obj.write(html_doc)
         file_obj.write(f.text)
@@ -78,6 +78,7 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
         with open(savepath+"/"+'pic_url.txt','a',encoding="ISO-8859-1") as file_obj:
             file_obj.write(pic_url+"\n")
         print("[%d/%d] Download: %s"%(index,photo_num,url))
+
         try:
             r=myRequest_get(pic_url,stream=True)
         except Exception as e:
@@ -86,7 +87,7 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
         if r.status_code==200:
             count+=1
             try:
-                savefilename=savepath+"/"+str(count)+"."+pic_url.split(".")[-1]
+                savefilename=savepath+"/"+pic_url.split("/")[-1]
             except:
                 savefilename=savepath+"/"+str(count)+".jpg"
             open(savefilename, 'wb').write(r.content)
@@ -94,6 +95,7 @@ def download_pic(name,url,path): #该函数用于下载具体帖子内的图片
         else:
             print(r.status_code,":url(%s) request failed!"%(pic_url))
         del r
+
     print("帖子[%s]下载完成，共下载[%d/%d]幅图片，有[%d]幅下载失败。"%(url,count+1,photo_num,photo_num-count-1))
 
 def get_list(class_name,url): #该函数获取板块内的帖子列表
@@ -120,10 +122,14 @@ def get_list(class_name,url): #该函数获取板块内的帖子列表
                 break
             else:
                 post_class="[其它]"
-        post_title=i.find_all('h3')[0].find_all('a')[0].string
-        post_title=post_class+post_title
         post_url=str(i.find_all('h3')[0]).split('"')[1]
         post_url=main_url+post_url
+        post_id=post_url.split("/")[-1].split(".")[0]
+        #post_title=i.find_all('h3')[0].find_all('a')[0].string
+        #post_title=post_class+post_title
+        post_title=post_class+post_id
+
+        print(post_title)
         #post_list[post_title] =post_url
         fileall=""
         if os.path.exists('list.txt'):
